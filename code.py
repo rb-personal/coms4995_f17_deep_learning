@@ -2,6 +2,35 @@
 
 import numpy as np
 
+# Cost Function J
+def J(theta, x):
+    return theta * x
+
+def JDeriv(theta, x):
+    return theta
+
+def forwardPropagation(theta, x):
+    return J(theta, x)
+
+def backwardPropagation(theta, x):
+    return JDeriv(theta, x)
+
+def norm(x):
+    return np.linalg.norm(x)
+
+def gradientCheck(theta, x):
+    eps = 1e-7
+    J_pos = J(theta + eps, x)
+    J_neg = J(theta - eps, x)
+    numerical_deriv = (J_pos - J_neg) / (2*eps)
+    print("numerical deriv = ", numerical_deriv)
+
+    analytic_deriv = JDeriv(theta, x)
+    print("analytic_deriv = ", analytic_deriv)
+
+    error = norm(analytic_deriv - numerical_deriv) / (norm(numerical_deriv) + norm(analytic_deriv))
+    return error
+
 # g(z) = 1 / (1 + exp(-z))
 def sigmoid(z):
     A = 1 / (1+np.exp(-z))
@@ -23,3 +52,8 @@ def forwardPropagation(A_prv, w, b):
     A = relu(z)
 
     return z
+
+theta = 10
+x = 3
+error = gradientCheck(theta, x)
+print("error = ", error)
